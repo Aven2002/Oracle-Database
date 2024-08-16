@@ -74,9 +74,6 @@ CREATE TABLE orders (
 );
 
 
-
-
-
 -- Sales Table
 CREATE TABLE sales (
     salesID NUMBER NOT NULL,

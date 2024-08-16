@@ -59,24 +59,37 @@ CREATE TABLE product (
     productName VARCHAR2(50) NOT NULL,
     productCategory VARCHAR2(50) NOT NULL,
     subCategory VARCHAR2(50) NOT NULL,
-    PRIMARY KEY (productID),
-    FOREIGN KEY (salesID) REFERENCES sales(salesID) ON DELETE CASCADE
+    PRIMARY KEY (productID)
+);
+-- Orders Table
+CREATE TABLE orders (
+    orderID VARCHAR2(10) NOT NULL,
+    salesID NUMBER NOT NULL,
+    shippingID NUMBER NOT NULL,
+    orderDate DATE NOT NULL,
+    orderPriority VARCHAR2(35) NOT NULL,
+    PRIMARY KEY (orderID),
+    FOREIGN KEY (salesID) REFERENCES sales(salesID) ON DELETE CASCADE,
+    FOREIGN KEY (shippingID) REFERENCES shipping(shippingID) ON DELETE CASCADE
 );
 
 
--- Create Sequences for auto-increment functionality
-CREATE SEQUENCE sales_seq
-START WITH 1
-INCREMENT BY 1
-NOCACHE
-NOCYCLE;
 
-CREATE SEQUENCE shipping_seq
-START WITH 1
-INCREMENT BY 1
-NOCACHE
-NOCYCLE;
 
+
+-- Sales Table
+CREATE TABLE sales (
+    salesID NUMBER NOT NULL,
+    customerID VARCHAR2(10) NOT NULL,
+    productID VARCHAR2(10) NOT NULL,
+    salesAmount NUMBER(10,2) NOT NULL,
+    quantity NUMBER NOT NULL,
+    discount NUMBER(3,2) NOT NULL,
+    profit NUMBER(10,2) NOT NULL,
+    PRIMARY KEY (salesID),
+    FOREIGN KEY (customerID) REFERENCES customer(customerID) ON DELETE CASCADE,
+    FOREIGN KEY (productID) REFERENCES product(productID) ON DELETE CASCADE
+);
 
 -- Create Triggers for auto-increment functionality
 -- Trigger for Sales Table

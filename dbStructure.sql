@@ -9,7 +9,7 @@ CREATE TABLE orders (
 
 -- Sales Table
 CREATE TABLE sales (
-    salesID NUMBER NOT NULL,
+    salesID VARCHAR2(10) NOT NULL,
     orderID VARCHAR2(10) NOT NULL,
     salesAmount NUMBER(10,2) NOT NULL,
     quantity NUMBER NOT NULL,
@@ -21,8 +21,8 @@ CREATE TABLE sales (
 
 -- Shipping Table
 CREATE TABLE shipping (
-    shippingID NUMBER NOT NULL,
-    salesID NUMBER NOT NULL,
+    shippingID VARCHAR2(10) NOT NULL,
+    salesID VARCHAR2(10) NOT NULL,
     shippingDate DATE NOT NULL,
     shippingMode VARCHAR2(50) NOT NULL,
     shippingCost NUMBER(10,2) NOT NULL,
@@ -33,7 +33,7 @@ CREATE TABLE shipping (
 -- Customer Table
 CREATE TABLE customer (
     customerID VARCHAR2(10) NOT NULL,
-    salesID NUMBER NOT NULL,
+    salesID VARCHAR2(10) NOT NULL,
     cusName VARCHAR2(50) NOT NULL,
     cusSegment VARCHAR2(50) NOT NULL,
     cusCity VARCHAR2(50) NOT NULL,
@@ -55,59 +55,51 @@ CREATE TABLE market (
 -- Product Table
 CREATE TABLE product (
     productID VARCHAR2(10) NOT NULL,
-    salesID NUMBER NOT NULL,
+    salesID VARCHAR2(10) NOT NULL,
     productName VARCHAR2(50) NOT NULL,
     productCategory VARCHAR2(50) NOT NULL,
     subCategory VARCHAR2(50) NOT NULL,
     PRIMARY KEY (productID)
 );
--- Orders Table
-CREATE TABLE orders (
-    orderID VARCHAR2(10) NOT NULL,
-    salesID NUMBER NOT NULL,
-    shippingID NUMBER NOT NULL,
-    orderDate DATE NOT NULL,
-    orderPriority VARCHAR2(35) NOT NULL,
-    PRIMARY KEY (orderID),
-    FOREIGN KEY (salesID) REFERENCES sales(salesID) ON DELETE CASCADE,
-    FOREIGN KEY (shippingID) REFERENCES shipping(shippingID) ON DELETE CASCADE
-);
 
+-- Create Sequences for auto-increment functionality
+CREATE SEQUENCE sales_seq
+START WITH 1
+INCREMENT BY 1
+NOCACHE
+NOCYCLE;
 
--- Sales Table
-CREATE TABLE sales (
-    salesID NUMBER NOT NULL,
-    customerID VARCHAR2(10) NOT NULL,
-    productID VARCHAR2(10) NOT NULL,
-    salesAmount NUMBER(10,2) NOT NULL,
-    quantity NUMBER NOT NULL,
-    discount NUMBER(3,2) NOT NULL,
-    profit NUMBER(10,2) NOT NULL,
-    PRIMARY KEY (salesID),
-    FOREIGN KEY (customerID) REFERENCES customer(customerID) ON DELETE CASCADE,
-    FOREIGN KEY (productID) REFERENCES product(productID) ON DELETE CASCADE
-);
+CREATE SEQUENCE shipping_seq
+START WITH 1
+INCREMENT BY 1
+NOCACHE
+NOCYCLE;
 
 -- Create Triggers for auto-increment functionality
--- Trigger for Sales Table
+-- Trigger for Sales Table with custom ID format
 CREATE OR REPLACE TRIGGER sales_before_insert
 BEFORE INSERT ON sales
 FOR EACH ROW
 BEGIN
     IF :NEW.salesID IS NULL THEN
-        SELECT sales_seq.NEXTVAL INTO :NEW.salesID FROM dual;
+        SELECT 'sal_' || TO_CHAR(sales_seq.NEXTVAL, 'FM00000') 
+        INTO :NEW.salesID 
+        FROM dual;
     END IF;
 END;
 /
 
--- Trigger for Shipping Table
+-- Trigger for Shipping Table with custom ID format
 CREATE OR REPLACE TRIGGER shipping_before_insert
 BEFORE INSERT ON shipping
 FOR EACH ROW
 BEGIN
     IF :NEW.shippingID IS NULL THEN
-        SELECT shipping_seq.NEXTVAL INTO :NEW.shippingID FROM dual;
+        SELECT 'ship_' || TO_CHAR(shipping_seq.NEXTVAL, 'FM00000') 
+        INTO :NEW.shippingID 
+        FROM dual;
     END IF;
 END;
 /
+
 

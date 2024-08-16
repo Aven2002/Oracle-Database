@@ -8,23 +8,23 @@ VALUES ('ORD002', TO_DATE('2024-08-02', 'YYYY-MM-DD'), 'Medium');
 INSERT INTO orders (orderID, orderDate, orderPriority)
 VALUES ('ORD003', TO_DATE('2024-08-03', 'YYYY-MM-DD'), 'Low');
 
-INSERT INTO sales (salesID, orderID, salesAmount, quantity, discount, profit)
-VALUES (1, 'ORD001', 1500.00, 3, 0.10, 500.00);
+INSERT INTO sales (orderID, salesAmount, quantity, discount, profit)
+VALUES ('ORD001', 1500.00, 3, 0.10, 500.00);
 
-INSERT INTO sales (salesID, orderID, salesAmount, quantity, discount, profit)
-VALUES (2, 'ORD002', 2500.00, 5, 0.15, 800.00);
+INSERT INTO sales (orderID, salesAmount, quantity, discount, profit)
+VALUES ('ORD002', 2500.00, 5, 0.15, 800.00);
 
-INSERT INTO sales (salesID, orderID, salesAmount, quantity, discount, profit)
-VALUES (3, 'ORD003', 1000.00, 2, 0.05, 300.00);
+INSERT INTO sales (orderID, salesAmount, quantity, discount, profit)
+VALUES ('ORD003', 1000.00, 2, 0.05, 300.00);
 
-INSERT INTO shipping (shippingID, salesID, shippingDate, shippingMode, shippingCost)
-VALUES (101, 1, TO_DATE('2024-08-04', 'YYYY-MM-DD'), 'Air', 50.00);
+INSERT INTO shipping (salesID, shippingDate, shippingMode, shippingCost)
+VALUES (sal_00002, TO_DATE('2024-08-04', 'YYYY-MM-DD'), 'Air', 50.00);
 
-INSERT INTO shipping (shippingID, salesID, shippingDate, shippingMode, shippingCost)
-VALUES (102, 2, TO_DATE('2024-08-05', 'YYYY-MM-DD'), 'Ground', 30.00);
+INSERT INTO shipping (salesID, shippingDate, shippingMode, shippingCost)
+VALUES (sal_00003, TO_DATE('2024-08-05', 'YYYY-MM-DD'), 'Ground', 30.00);
 
-INSERT INTO shipping (shippingID, salesID, shippingDate, shippingMode, shippingCost)
-VALUES (103, 3, TO_DATE('2024-08-06', 'YYYY-MM-DD'), 'Sea', 70.00);
+INSERT INTO shipping (salesID, shippingDate, shippingMode, shippingCost)
+VALUES (sal_00004, TO_DATE('2024-08-06', 'YYYY-MM-DD'), 'Sea', 70.00);
 
 INSERT INTO customer (customerID, salesID, cusName, cusSegment, cusCity, cusState, cusCountry)
 VALUES ('CUST001', 1, 'John Doe', 'Consumer', 'New York', 'NY', 'USA');

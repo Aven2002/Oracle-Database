@@ -50,22 +50,6 @@ CREATE TABLE product (
     subCategory VARCHAR2(50) NOT NULL,
     PRIMARY KEY (productID)
 );
--- Orders Table
-CREATE TABLE orders (
-    orderID VARCHAR2(10) NOT NULL,
-    salesID NUMBER NOT NULL,
-    shippingID NUMBER NOT NULL,
-    orderDate DATE NOT NULL,
-    orderPriority VARCHAR2(35) NOT NULL,
-    PRIMARY KEY (orderID),
-    FOREIGN KEY (salesID) REFERENCES sales(salesID) ON DELETE CASCADE,
-    FOREIGN KEY (shippingID) REFERENCES shipping(shippingID) ON DELETE CASCADE
-);
-
-
-
-
-
 -- Sales Table
 CREATE TABLE sales (
     salesID NUMBER NOT NULL,
@@ -79,6 +63,20 @@ CREATE TABLE sales (
     FOREIGN KEY (customerID) REFERENCES customer(customerID) ON DELETE CASCADE,
     FOREIGN KEY (productID) REFERENCES product(productID) ON DELETE CASCADE
 );
+
+-- Orders Table
+CREATE TABLE orders (
+    orderID VARCHAR2(10) NOT NULL,
+    salesID NUMBER NOT NULL,
+    shippingID NUMBER NOT NULL,
+    orderDate DATE NOT NULL,
+    orderPriority VARCHAR2(35) NOT NULL,
+    PRIMARY KEY (orderID),
+    FOREIGN KEY (salesID) REFERENCES sales(salesID) ON DELETE CASCADE,
+    FOREIGN KEY (shippingID) REFERENCES shipping(shippingID) ON DELETE CASCADE
+);
+
+
 
 -- Create Triggers for auto-increment functionality
 

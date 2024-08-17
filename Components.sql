@@ -1,12 +1,21 @@
 -- Mock Data
-INSERT INTO orders (orderID, orderDate, orderPriority)
-VALUES ('ORD001', TO_DATE('2024-08-01', 'YYYY-MM-DD'), 'High');
+INSERT INTO shipping (shippingID, shippingDate, shippingMode, shippingCost)
+VALUES (00001, TO_DATE('2024-08-04', 'YYYY-MM-DD'), 'Air', 50.00);
 
-INSERT INTO orders (orderID, orderDate, orderPriority)
-VALUES ('ORD002', TO_DATE('2024-08-02', 'YYYY-MM-DD'), 'Medium');
+INSERT INTO shipping (shippingID, shippingDate, shippingMode, shippingCost)
+VALUES (00002, TO_DATE('2024-08-05', 'YYYY-MM-DD'), 'Ground', 30.00);
 
-INSERT INTO orders (orderID, orderDate, orderPriority)
-VALUES ('ORD003', TO_DATE('2024-08-03', 'YYYY-MM-DD'), 'Low');
+INSERT INTO shipping (shippingID, shippingDate, shippingMode, shippingCost)
+VALUES (00003, TO_DATE('2024-08-06', 'YYYY-MM-DD'), 'Sea', 70.00);
+
+INSERT INTO orders (orderID, shippingID, orderDate, orderPriority)
+VALUES ('ORD001', 00001, TO_DATE('2024-08-01', 'YYYY-MM-DD'), 'High');
+
+INSERT INTO orders (orderID, shippingID, orderDate, orderPriority)
+VALUES ('ORD002', 00002, TO_DATE('2024-08-01', 'YYYY-MM-DD'), 'High');
+
+INSERT INTO orders (orderID, shippingID, orderDate, orderPriority)
+VALUES ('ORD003', 00003, TO_DATE('2024-08-01', 'YYYY-MM-DD'), 'High');
 
 INSERT INTO sales (orderID, salesAmount, quantity, discount, profit)
 VALUES ('ORD001', 1500.00, 3, 0.10, 500.00);
@@ -17,42 +26,32 @@ VALUES ('ORD002', 2500.00, 5, 0.15, 800.00);
 INSERT INTO sales (orderID, salesAmount, quantity, discount, profit)
 VALUES ('ORD003', 1000.00, 2, 0.05, 300.00);
 
-INSERT INTO shipping (salesID, shippingDate, shippingMode, shippingCost)
-VALUES (sal_00002, TO_DATE('2024-08-04', 'YYYY-MM-DD'), 'Air', 50.00);
+INSERT INTO market (marketID, marketRegion)
+VALUES ('MARK001', 'North America');
 
-INSERT INTO shipping (salesID, shippingDate, shippingMode, shippingCost)
-VALUES (sal_00003, TO_DATE('2024-08-05', 'YYYY-MM-DD'), 'Ground', 30.00);
+INSERT INTO market (marketID, marketRegion)
+VALUES ('MARK002','West Coast');
 
-INSERT INTO shipping (salesID, shippingDate, shippingMode, shippingCost)
-VALUES (sal_00004, TO_DATE('2024-08-06', 'YYYY-MM-DD'), 'Sea', 70.00);
+INSERT INTO market (marketID, marketRegion)
+VALUES ('MARK003', 'Midwest');
 
-INSERT INTO customer (customerID, salesID, cusName, cusSegment, cusCity, cusState, cusCountry)
-VALUES ('CUST001', 1, 'John Doe', 'Consumer', 'New York', 'NY', 'USA');
+INSERT INTO customer (customerID, marketID, cusName, cusSegment, cusCity, cusState, cusCountry)
+VALUES ('CUST001', 'MARK001', 'John Doe', 'Consumer', 'New York', 'NY', 'USA');
 
-INSERT INTO customer (customerID, salesID, cusName, cusSegment, cusCity, cusState, cusCountry)
-VALUES ('CUST002', 2, 'Jane Smith', 'Corporate', 'Los Angeles', 'CA', 'USA');
+INSERT INTO customer (customerID, marketID,  cusName, cusSegment, cusCity, cusState, cusCountry)
+VALUES ('CUST002', 'MARK001', 'Jane Smith', 'Corporate', 'Los Angeles', 'CA', 'USA');
 
-INSERT INTO customer (customerID, salesID, cusName, cusSegment, cusCity, cusState, cusCountry)
-VALUES ('CUST003', 3, 'Bob Johnson', 'Small Business', 'Chicago', 'IL', 'USA');
+INSERT INTO customer (customerID, marketID, cusName, cusSegment, cusCity, cusState, cusCountry)
+VALUES ('CUST003', 'MARK001', 'Bob Johnson', 'Small Business', 'Chicago', 'IL', 'USA');
 
+INSERT INTO product (productID, productName, productCategory, subCategory)
+VALUES ('PROD001', 'Laptop', 'Electronics', 'Computers');
 
-INSERT INTO market (marketID, customerID, marketRegion)
-VALUES ('MARK001', 'CUST001', 'North America');
+INSERT INTO product (productID,  productName, productCategory, subCategory)
+VALUES ('PROD002', 'Smartphone', 'Electronics', 'Mobile Devices');
 
-INSERT INTO market (marketID, customerID, marketRegion)
-VALUES ('MARK002', 'CUST002', 'West Coast');
-
-INSERT INTO market (marketID, customerID, marketRegion)
-VALUES ('MARK003', 'CUST003', 'Midwest');
-
-INSERT INTO product (productID, salesID, productName, productCategory, subCategory)
-VALUES ('PROD001', 1, 'Laptop', 'Electronics', 'Computers');
-
-INSERT INTO product (productID, salesID, productName, productCategory, subCategory)
-VALUES ('PROD002', 2, 'Smartphone', 'Electronics', 'Mobile Devices');
-
-INSERT INTO product (productID, salesID, productName, productCategory, subCategory)
-VALUES ('PROD003', 3, 'Office Chair', 'Furniture', 'Office Supplies');
+INSERT INTO product (productID,  productName, productCategory, subCategory)
+VALUES ('PROD003', 'Office Chair', 'Furniture', 'Office Supplies');
 
 
 

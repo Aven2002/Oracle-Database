@@ -2,21 +2,21 @@
 
 -- Shipping Table
 CREATE TABLE shipping (
-    shippingID VARCHAR2(10) NOT NULL,
+    shippingID NUMBER NOT NULL,
     shippingDate DATE NOT NULL,
     shippingMode VARCHAR2(50) NOT NULL,
     shippingCost NUMBER(10,2) NOT NULL,
-    PRIMARY KEY (shippingID),
+    PRIMARY KEY (shippingID)
 );
 
 -- Orders Table
 CREATE TABLE orders (
     orderID VARCHAR2(10) NOT NULL,
-    shippingID VARCHAR2(10) NOT NULL,
+    shippingID NUMBER NOT NULL,
     orderDate DATE NOT NULL,
     orderPriority VARCHAR2(50) NOT NULL,
     PRIMARY KEY (orderID),
-    FOREIGN KEY (shippingID) REFERENCES shippint(shippingID) ON DELETE CASCADE
+    FOREIGN KEY (shippingID) REFERENCES shipping(shippingID) ON DELETE CASCADE
 );
 
 -- Sales Table
@@ -31,22 +31,24 @@ CREATE TABLE sales (
     FOREIGN KEY (orderID) REFERENCES orders(orderID) ON DELETE CASCADE
 );
 
+-- Market Table
+CREATE TABLE market (
+    marketID VARCHAR2(10) NOT NULL,
+    marketRegion VARCHAR2(50) NOT NULL,
+    PRIMARY KEY (marketID)
+);
+
 -- Customer Table
 CREATE TABLE customer (
     customerID VARCHAR2(10) NOT NULL,
+    marketID VARCHAR2(10) NOT NULL,
     cusName VARCHAR2(50) NOT NULL,
     cusSegment VARCHAR2(50) NOT NULL,
     cusCity VARCHAR2(50) NOT NULL,
     cusState VARCHAR2(50) NOT NULL,
     cusCountry VARCHAR2(50) NOT NULL,
     PRIMARY KEY (customerID),
-);
-
--- Market Table
-CREATE TABLE market (
-    marketID VARCHAR2(10) NOT NULL,
-    marketRegion VARCHAR2(50) NOT NULL,
-    PRIMARY KEY (marketID),
+    FOREIGN KEY (marketID) REFERENCES market(marketID) ON DELETE CASCADE
 );
 
 -- Product Table

@@ -1,10 +1,22 @@
 -- Create Tables
+
+-- Shipping Table
+CREATE TABLE shipping (
+    shippingID VARCHAR2(10) NOT NULL,
+    shippingDate DATE NOT NULL,
+    shippingMode VARCHAR2(50) NOT NULL,
+    shippingCost NUMBER(10,2) NOT NULL,
+    PRIMARY KEY (shippingID),
+);
+
 -- Orders Table
 CREATE TABLE orders (
     orderID VARCHAR2(10) NOT NULL,
+    shippingID VARCHAR2(10) NOT NULL,
     orderDate DATE NOT NULL,
     orderPriority VARCHAR2(50) NOT NULL,
-    PRIMARY KEY (orderID)
+    PRIMARY KEY (orderID),
+    FOREIGN KEY (shippingID) REFERENCES shippint(shippingID) ON DELETE CASCADE
 );
 
 -- Sales Table
@@ -19,43 +31,27 @@ CREATE TABLE sales (
     FOREIGN KEY (orderID) REFERENCES orders(orderID) ON DELETE CASCADE
 );
 
--- Shipping Table
-CREATE TABLE shipping (
-    shippingID VARCHAR2(10) NOT NULL,
-    salesID VARCHAR2(10) NOT NULL,
-    shippingDate DATE NOT NULL,
-    shippingMode VARCHAR2(50) NOT NULL,
-    shippingCost NUMBER(10,2) NOT NULL,
-    PRIMARY KEY (shippingID),
-    FOREIGN KEY (salesID) REFERENCES sales(salesID) ON DELETE CASCADE
-);
-
 -- Customer Table
 CREATE TABLE customer (
     customerID VARCHAR2(10) NOT NULL,
-    salesID VARCHAR2(10) NOT NULL,
     cusName VARCHAR2(50) NOT NULL,
     cusSegment VARCHAR2(50) NOT NULL,
     cusCity VARCHAR2(50) NOT NULL,
     cusState VARCHAR2(50) NOT NULL,
     cusCountry VARCHAR2(50) NOT NULL,
     PRIMARY KEY (customerID),
-    FOREIGN KEY (salesID) REFERENCES sales(salesID) ON DELETE CASCADE
 );
 
 -- Market Table
 CREATE TABLE market (
     marketID VARCHAR2(10) NOT NULL,
-    customerID VARCHAR2(10) NOT NULL,
     marketRegion VARCHAR2(50) NOT NULL,
     PRIMARY KEY (marketID),
-    FOREIGN KEY (customerID) REFERENCES customer(customerID) ON DELETE CASCADE
 );
 
 -- Product Table
 CREATE TABLE product (
     productID VARCHAR2(10) NOT NULL,
-    salesID VARCHAR2(10) NOT NULL,
     productName VARCHAR2(50) NOT NULL,
     productCategory VARCHAR2(50) NOT NULL,
     subCategory VARCHAR2(50) NOT NULL,
@@ -69,11 +65,6 @@ INCREMENT BY 1
 NOCACHE
 NOCYCLE;
 
-CREATE SEQUENCE shipping_seq
-START WITH 1
-INCREMENT BY 1
-NOCACHE
-NOCYCLE;
 
 -- Create Triggers for auto-increment functionality
 -- Trigger for Sales Table with custom ID format
@@ -89,17 +80,6 @@ BEGIN
 END;
 /
 
--- Trigger for Shipping Table with custom ID format
-CREATE OR REPLACE TRIGGER shipping_before_insert
-BEFORE INSERT ON shipping
-FOR EACH ROW
-BEGIN
-    IF :NEW.shippingID IS NULL THEN
-        SELECT 'ship_' || TO_CHAR(shipping_seq.NEXTVAL, 'FM00000') 
-        INTO :NEW.shippingID 
-        FROM dual;
-    END IF;
-END;
-/
+
 
 

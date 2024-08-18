@@ -56,13 +56,11 @@ CREATE TABLE product (
 CREATE TABLE orders (
     orderID VARCHAR2(35) NOT NULL,
     salesID VARCHAR2(35) NOT NULL,
-    customerID VARCHAR2(35) NOT NULL,
     productID VARCHAR2(35) NOT NULL,
     orderDate DATE DEFAULT SYSDATE NOT NULL,
     orderPriority VARCHAR2(50) NOT NULL,
     PRIMARY KEY (orderID),
     FOREIGN KEY (salesID) REFERENCES sales(salesID) ON DELETE CASCADE,
-    FOREIGN KEY (customerID) REFERENCES customer(customerID),
     FOREIGN KEY (productID) REFERENCES product(productID)
 );
 

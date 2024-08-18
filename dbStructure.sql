@@ -5,7 +5,6 @@ CREATE TABLE shipping (
     shippingID NUMBER NOT NULL,
     shippingDate DATE NOT NULL,
     shippingMode VARCHAR2(50) NOT NULL,
-    shippingMode VARCHAR2(50) NOT NULL,
     shippingCost NUMBER(10,2) NOT NULL,
     PRIMARY KEY (shippingID)
 );
@@ -23,9 +22,6 @@ CREATE TABLE customer (
     marketID VARCHAR2(35) NOT NULL,
     cusName VARCHAR2(50) NOT NULL,
     cusSegment VARCHAR2(50) NOT NULL,
-    cusCity VARCHAR2(50) NOT NULL,
-    cusState VARCHAR2(50) NOT NULL,
-    cusCountry VARCHAR2(50) NOT NULL,
     cusCity VARCHAR2(50) NOT NULL,
     cusState VARCHAR2(50) NOT NULL,
     cusCountry VARCHAR2(50) NOT NULL,
@@ -80,7 +76,6 @@ NOCYCLE;
 
 -- Create Triggers for auto-increment functionality
 -- Trigger for Sales Table with custom ID format
--- Trigger for Sales Table with custom ID format
 CREATE OR REPLACE TRIGGER sales_before_insert
 BEFORE INSERT ON sales
 FOR EACH ROW
@@ -89,12 +84,6 @@ BEGIN
         SELECT 'sal_' || TO_CHAR(sales_seq.NEXTVAL, 'FM00000') 
         INTO :NEW.salesID 
         FROM dual;
-        SELECT 'sal_' || TO_CHAR(sales_seq.NEXTVAL, 'FM00000') 
-        INTO :NEW.salesID 
-        FROM dual;
     END IF;
 END;
 /
-
-
-

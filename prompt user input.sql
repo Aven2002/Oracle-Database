@@ -9,7 +9,6 @@ ACCEPT p_Market PROMPT 'Enter Market: ';
 ACCEPT p_Region PROMPT 'Enter Region: ';
 
 -- Prompt for Shipping Details
-ACCEPT p_OrderDate PROMPT 'Enter Order Date (YYYY-MM-DD): ';
 ACCEPT p_ShipDate PROMPT 'Enter Ship Date (YYYY-MM-DD): ';
 ACCEPT p_ShipMode PROMPT 'Enter Ship Mode: ';
 
@@ -29,7 +28,7 @@ ACCEPT p_OrderPriority PROMPT 'Enter Order Priority: ';
 BEGIN
     Insert_Records(
         '&p_CustomerFirstName', '&p_CustomerLastName', '&p_Segment', '&p_City', '&p_State', '&p_Country', '&p_Market', '&p_Region',
-        TO_DATE('&p_OrderDate', 'YYYY-MM-DD'), TO_DATE('&p_ShipDate', 'YYYY-MM-DD'), '&p_ShipMode',
+        TO_DATE('&p_ShipDate', 'YYYY-MM-DD'), '&p_ShipMode',
         '&p_Category', '&p_SubCategory', '&p_ProductName',
         &p_Quantity, &p_Discount, &p_Profit, &p_ShippingCost, '&p_OrderPriority'
     );

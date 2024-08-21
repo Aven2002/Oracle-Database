@@ -1,87 +1,65 @@
--- Create Tables
-
--- Shipping Table
-CREATE TABLE shipping (
-    shippingID NUMBER NOT NULL,
-    shippingDate DATE NOT NULL,
-    shippingMode VARCHAR2(50) NOT NULL,
-    shippingCost NUMBER(10,2) NOT NULL,
-    PRIMARY KEY (shippingID)
-);
-
--- Market Table
-CREATE TABLE market (
-    marketID VARCHAR2(35) NOT NULL,
-    marketRegion VARCHAR2(50) NOT NULL,
-    PRIMARY KEY (marketID)
-);
-
--- Customer Table
-CREATE TABLE customer (
-    customerID VARCHAR2(35) NOT NULL,
-    marketID VARCHAR2(35) NOT NULL,
-    cusName VARCHAR2(50) NOT NULL,
-    cusSegment VARCHAR2(50) NOT NULL,
-    cusCity VARCHAR2(50) NOT NULL,
-    cusState VARCHAR2(50) NOT NULL,
-    cusCountry VARCHAR2(50) NOT NULL,
-    PRIMARY KEY (customerID),
-    FOREIGN KEY (marketID) REFERENCES market(marketID) ON DELETE CASCADE
-);
-
--- Sales Table
-CREATE TABLE sales (
-    salesID VARCHAR2(35) NOT NULL,
-    customerID VARCHAR2(35) NOT NULL,
-    shippingID NUMBER NOT NULL,
-    salesAmount NUMBER(10,2) NOT NULL,
-    quantity NUMBER NOT NULL,
-    discount NUMBER(3,2) NOT NULL,
-    profit NUMBER(10,2) NOT NULL,
-    PRIMARY KEY (salesID),
-    FOREIGN KEY (customerID) REFERENCES customer(customerID),
-    FOREIGN KEY (shippingID) REFERENCES shipping(shippingID) ON DELETE CASCADE
-);
-
--- Product Table
-CREATE TABLE product (
-    productID VARCHAR2(35) NOT NULL,
-    productName VARCHAR2(155) NOT NULL,
-    productCategory VARCHAR2(50) NOT NULL,
-    subCategory VARCHAR2(50) NOT NULL,
-    PRIMARY KEY (productID)
-);
-
--- Orders Table
-CREATE TABLE orders (
-    orderID VARCHAR2(35) NOT NULL,
-    salesID VARCHAR2(35) NOT NULL,
-    productID VARCHAR2(35) NOT NULL,
-    orderDate DATE DEFAULT SYSDATE NOT NULL,
-    orderPriority VARCHAR2(50) NOT NULL,
-    PRIMARY KEY (orderID),
-    FOREIGN KEY (salesID) REFERENCES sales(salesID) ON DELETE CASCADE,
-    FOREIGN KEY (productID) REFERENCES product(productID)
-);
-
--- Create Sequences for auto-increment functionality
-CREATE SEQUENCE sales_seq
-START WITH 1
-INCREMENT BY 1
-NOCACHE
-NOCYCLE;
-
-
--- Create Triggers for auto-increment functionality
--- Trigger for Sales Table with custom ID format
-CREATE OR REPLACE TRIGGER sales_before_insert
-BEFORE INSERT ON sales
-FOR EACH ROW
 BEGIN
-    IF :NEW.salesID IS NULL THEN
-        SELECT 'sal_' || TO_CHAR(sales_seq.NEXTVAL, 'FM00000') 
-        INTO :NEW.salesID 
-        FROM dual;
-    END IF;
+    -- Create Customer Table
+    EXECUTE IMMEDIATE '
+    CREATE TABLE Customer (
+        CustomerID VARCHAR2(50) PRIMARY KEY,
+        CustomerName VARCHAR2(100),
+        Segment VARCHAR2(50),
+        City VARCHAR2(100),
+        State VARCHAR2(100),
+        Country VARCHAR2(100),
+        Market VARCHAR2(35),
+        Region VARCHAR2(35),
+    )';
+
+    -- Create Shipping Table
+    EXECUTE IMMEDIATE '
+    CREATE TABLE Shipping (
+        ShippingID INT PRIMARY KEY,
+        OrderID VARCHAR2(50),
+        OrderDate DATE,
+        ShipDate DATE,
+        ShipMode VARCHAR2(50),
+        CustomerID VARCHAR2(50),
+        FOREIGN KEY (CustomerID) REFERENCES Customer(CustomerID),
+    )';
+
+    -- Create Product Table
+    EXECUTE IMMEDIATE '
+    CREATE TABLE Product (
+        ProductID VARCHAR2(50) PRIMARY KEY,
+        Category VARCHAR2(50),
+        SubCategory VARCHAR2(50),
+        ProductName VARCHAR2(255)
+    )';
+
+    -- Create OrderItem Table
+    EXECUTE IMMEDIATE '
+    CREATE TABLE OrderItem (
+        OrderID VARCHAR2(50),
+        ProductID VARCHAR2(50),
+        SalesAmount NUMBER(10, 2),
+        Quantity NUMBER,
+        Discount NUMBER(5, 2),
+        Profit NUMBER(10, 2),
+        ShippingCost NUMBER(10, 2),
+        OrderPriority VARCHAR2(50),
+        PRIMARY KEY (OrderID, ProductID),
+        FOREIGN KEY (ProductID) REFERENCES Product(ProductID)
+    )';
+
 END;
 /
+
+
+-- Index on CustomerID for faster lookups in the Shipping table based on CustomerID
+CREATE INDEX idx_shipping_customerid ON Shipping(CustomerID);
+
+-- Index on CustomerName for faster searches based on CustomerName
+CREATE INDEX idx_customer_name ON Customer(CustomerName);
+
+-- Index on OrderPriority for faster lookups in the OrderItem table based on OrderPriority
+CREATE INDEX idx_orderitem_orderpriority ON OrderItem(OrderPriority);
+
+-- Index on ProductID for faster lookups in the OrderItem table based on ProductID
+CREATE INDEX idx_orderitem_productid ON OrderItem(ProductID);

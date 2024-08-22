@@ -56,6 +56,7 @@ BEGIN
 END;
 /
 
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --Create Indexes
 
 -- Index on CustomerID for faster lookups in the Shipping table based on CustomerID

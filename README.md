@@ -30,7 +30,7 @@ Advance Database System - Relational Database
 # Step 4 : Date Import
     1. Run the code in Db_Structure.sql -- Create Tables & Indexes
 
-# Step 4 : Date Import
+# Step 5 : Date Import
     1. Run the code in Data_Import.sql step by step to avoid unexpected issues  -- Import Data from csv file
         path：C:\Users\Lenovo\Desktop\
         filename： Global_Superstore.csv

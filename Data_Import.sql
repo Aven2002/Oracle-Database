@@ -30,7 +30,7 @@ EXCEPTION
         RETURN FALSE;
 END validate_file_path;
 
-
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 -- Step 2 :Process CSV File Function (Read & Import Data from csv file) 
 CREATE OR REPLACE FUNCTION process_csv_file(p_file_name IN VARCHAR2)
 RETURN VARCHAR2
@@ -209,6 +209,7 @@ EXCEPTION
 END;
 /
 
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --Step 3 : Prompt User (File Path & File Name)
 SET SERVEROUTPUT ON
     ACCEPT file_path char PROMPT "Enter File Path: ";
